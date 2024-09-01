@@ -1,17 +1,8 @@
-"use client";
-import { signIn } from "next-auth/react";
+import { SignIn } from "@/components/sign-in";
 
 /**
  * @returns Login page component
  */
-export default function SignIn() {
-  const handleGoogleSignIn = async () => {
-    await signIn("google", { callbackUrl: "/" });
-  };
-
-  return (
-    <>
-      <button onClick={handleGoogleSignIn}>Continue with Google</button>
-    </>
-  );
+export default function SignInPage() {
+  return <SignIn />;
 }
