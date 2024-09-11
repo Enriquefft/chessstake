@@ -1,11 +1,20 @@
+'use client';
 
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { DollarSign, Brain, Trophy } from "lucide-react"
 import Image from 'next/image'
-
+import ChessBackground from "@/components/ChessBackground/ChessBackground"
+import { useEffect } from "react"
 export default function LandingPage() {
+  useEffect(() => {
+    console.log('LandingPage mounted');
+  }, []);
+
+  console.log('Rendering LandingPage');
+
   return (
+    
     <div className="flex flex-col min-h-screen bg-white text-black">
       <header className="px-4 lg:px-6 h-14 flex items-center">
         <Link className="flex items-center justify-center" href="#">
@@ -16,7 +25,6 @@ export default function LandingPage() {
             height={40} 
             className="mr-2"
           />
-
           <span className="font-bold text-lg">ChessStake</span>
         </Link>
         <nav className="ml-auto flex gap-4 sm:gap-6">
@@ -29,8 +37,9 @@ export default function LandingPage() {
         </nav>
       </header>
       <main className="flex-1">
-        <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48">
-          <div className="container px-4 md:px-6">
+        <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 relative min-h-[50vh]">
+          <ChessBackground />
+          <div className="container px-4 md:px-6 relative z-10">
             <div className="flex flex-col items-center space-y-4 text-center">
               <div className="space-y-2">
                 <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">

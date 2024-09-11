@@ -3,7 +3,7 @@ import "@/styles/globals.css";
 import { inter as fontSans } from "@/styles/fonts";
 
 import { cn } from "@/lib/utils";
-import type { Metadata } from 'next'
+import type { Metadata } from 'next';
 
 /**
  * @param layoutPros - The root layout component props
