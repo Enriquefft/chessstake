@@ -1,130 +1,140 @@
-import Image from "next/image";
-import { auth } from "@/auth";
-import Link from "next/link";
+'use client';
 
-/**
- * @returns Home page component
- */
-export default async function Home() {
-  const session = await auth();
+import { Button } from "@/components/ui/button"
+import Link from "next/link"
+import { DollarSign, Brain, Trophy } from "lucide-react"
+import Image from 'next/image'
+import ChessBackground from "@/components/ChessBackground/ChessBackground"
+import { useEffect } from "react"
+export default function LandingPage() {
+  useEffect(() => {
+    console.log('LandingPage mounted');
+  }, []);
+
+  console.log('Rendering LandingPage');
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <Link href="/auth/login">LOGIN</Link>
-
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        {session ? (
-          <div>
-            <h1>Logged in</h1>
-            {session.user?.name}
+    
+    <div className="flex flex-col min-h-screen bg-white text-black">
+      <header className="px-4 lg:px-6 h-14 flex items-center">
+        <Link className="flex items-center justify-center" href="#">
+        <Image 
+            src="/logo.png" 
+            alt="ChessStake Logo" 
+            width={40} 
+            height={40} 
+            className="mr-2"
+          />
+          <span className="font-bold text-lg">ChessStake</span>
+        </Link>
+        <nav className="ml-auto flex gap-4 sm:gap-6">
+          <Link className="text-sm font-medium hover:underline underline-offset-4" href="#how-it-works">
+          How it works           </Link>
+          <Link className="text-sm font-medium hover:underline underline-offset-4" href="#pricing">
+          Prices          </Link>
+          <Link className="text-sm font-medium hover:underline underline-offset-4" href="#mission">
+          Our mission          </Link>
+        </nav>
+      </header>
+      <main className="flex-1">
+        <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 relative min-h-[50vh]">
+          <ChessBackground />
+          <div className="container px-4 md:px-6 relative z-10">
+            <div className="flex flex-col items-center space-y-4 text-center">
+              <div className="space-y-2">
+                <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
+                Monetize your chess skills
+                </h1>
+                <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl">
+                  Wager against personalized AI opponents and grow as a player. Join ChessStake today!
+                </p>
+              </div>
+              <div className="space-x-4">
+                <Button>Get Started</Button>
+                <Button variant="outline">Learn More</Button>
+              </div>
+            </div>
           </div>
-        ) : (
-          "no session"
-        )}
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
-
-      <div className="before: relative z-[-1] flex place-items-center bg-gradient-to-r before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-to-r after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-balance text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  );
+        </section>
+        <section id="how-it-works" className="w-full py-12 md:py-24 lg:py-32 bg-gray-100">
+          <div className="container px-4 md:px-6">
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8">
+              How It Works
+            </h2>
+            <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="flex flex-col items-center text-center">
+                <DollarSign className="h-12 w-12 mb-4" />
+                <h3 className="text-xl font-bold mb-2">Wager</h3>
+                <p className="text-gray-500">Play against our AI and bet on your skills</p>
+              </div>
+              <div className="flex flex-col items-center text-center">
+                <Brain className="h-12 w-12 mb-4" />
+                <h3 className="text-xl font-bold mb-2">Learn</h3>
+                <p className="text-gray-500">Improve your game with personalized AI opponents</p>
+              </div>
+              <div className="flex flex-col items-center text-center">
+                <Trophy className="h-12 w-12 mb-4" />
+                <h3 className="text-xl font-bold mb-2">Earn</h3>
+                <p className="text-gray-500">Win matches and earn real money</p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section id="pricing" className="w-full py-12 md:py-24 lg:py-32">
+          <div className="container px-4 md:px-6">
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8">
+              Simple Pricing
+            </h2>
+            <div className="mx-auto max-w-sm space-y-4">
+              <div className="flex flex-col p-6 bg-gray-100 rounded-lg shadow-sm">
+                <h3 className="text-2xl font-bold text-center mb-4">Monthly Subscription</h3>
+                <div className="text-center text-4xl font-bold mb-4">$19.99</div>
+                <ul className="space-y-2 mb-6">
+                  <li className="flex items-center">
+                    <DollarSign className="mr-2 h-4 w-4" />
+                    <span>Unlimited matches</span>
+                  </li>
+                  <li className="flex items-center">
+                    <DollarSign className="mr-2 h-4 w-4" />
+                    <span>Real money wagering</span>
+                  </li>
+                  <li className="flex items-center">
+                    <Brain className="mr-2 h-4 w-4" />
+                    <span>Personalized AI opponents</span>
+                  </li>
+                </ul>
+                <Button className="w-full">Subscribe Now</Button>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section id="mission" className="w-full py-12 md:py-24 lg:py-32 bg-gray-100">
+          <div className="container px-4 md:px-6">
+            <div className="flex flex-col items-center space-y-4 text-center">
+              <div className="space-y-2">
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
+                  Our Mission
+                </h2>
+                <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl">
+                  We're dedicated to helping chess players monetize their skills and grow as players. 
+                  With ChessStake, you can turn your passion into profit while continuously improving your game.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+      <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
+        <p className="text-xs text-gray-500">© 2023 ChessStake. All rights reserved.</p>
+        <nav className="sm:ml-auto flex gap-4 sm:gap-6">
+          <Link className="text-xs hover:underline underline-offset-4" href="#">
+            Terms of Service
+          </Link>
+          <Link className="text-xs hover:underline underline-offset-4" href="#">
+            Privacy
+          </Link>
+        </nav>
+      </footer>
+    </div>
+  )
 }
