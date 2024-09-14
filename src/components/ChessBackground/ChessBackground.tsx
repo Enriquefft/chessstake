@@ -1,32 +1,54 @@
-'use client';
+"use client";
+import { useState, useEffect } from "react";
+import Image from "next/image";
+import { cn } from "@/lib/utils";
 
-import React, { useState, useEffect } from 'react';
-import styles from './ChessBackground.module.css';
+const chessPieces = ["B", "K", "N", "P", "Q", "R"] as const;
+const colors = ["w", "b"] as const;
 
-const chessPieces = ['♔', '♕', '♖', '♗', '♘', '♙', '♚', '♛', '♜', '♝', '♞', '♟'] as const;
-type ChessPiece = typeof chessPieces[number];
+const getRandomChessPiece = () => {
+  const randomPiece =
+    chessPieces[Math.floor(Math.random() * chessPieces.length)];
+  const randomColor = colors[Math.floor(Math.random() * colors.length)];
 
-const getRandomChessPiece = (): ChessPiece => {
-  const index = Math.floor(Math.random() * chessPieces.length);
-  return chessPieces[index] as ChessPiece;
+  if (randomPiece === undefined || randomColor === undefined) {
+    return getRandomChessPiece();
+  }
+
+  const piece = `${randomColor}${randomPiece}` as const;
+  return piece;
 };
 
-const ChessBackground: React.FC = () => {
-  const [piece, setPiece] = useState<ChessPiece | null>(null);
+const CHANGE_DURATION = 1000;
+
+/**
+ * Random chess piece component
+ */
+export function RandomChessPiece({ className }: { className?: string }) {
+  const [piece, setPiece] =
+    useState<ReturnType<typeof getRandomChessPiece>>(getRandomChessPiece);
 
   useEffect(() => {
-    const selectedPiece = getRandomChessPiece();
-    console.log('Selected chess piece:', selectedPiece);
-    setPiece(selectedPiece);
+    setPiece(getRandomChessPiece());
+
+    const intervalId = setInterval(() => {
+      console.log("setPiece");
+      setPiece(getRandomChessPiece());
+    }, CHANGE_DURATION);
+
+    // Clean up the interval on component unmount
+    return () => {
+      clearInterval(intervalId);
+    };
   }, []);
 
-  console.log('Rendering ChessBackground, piece:', piece);
-
   return (
-    <div className={`${styles['chessBackground']} ${piece ? styles['fadeIn'] : ''}`}>
-      {piece || '♟'}
-    </div>
+    <Image
+      src={`/images/pieces/${piece}.png`}
+      alt={piece}
+      width={100}
+      height={100}
+      className={cn(className)}
+    />
   );
-};
-
-export default ChessBackground;
+}
