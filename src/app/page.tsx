@@ -1,9 +1,12 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { DollarSign, Brain, Trophy, type LucideProps } from "lucide-react";
+import { DollarSign, Brain, Trophy, type LucideProps, Menu, X } from "lucide-react";
 import Image from "next/image";
 import { RandomChessPiece } from "@/components/ChessBackground/ChessBackground";
 import type { ForwardRefExoticComponent, RefAttributes } from "react";
+import React, { useState, useEffect } from "react";
+
 
 type Icon = ForwardRefExoticComponent<
   Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
@@ -62,20 +65,40 @@ const PricingCard = ({
  *
  */
 export default function LandingPage() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < 768); // breakpoint for mobile
+    };
+
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
     <div className="flex min-h-screen flex-col bg-white text-black">
-      {/* Header */}
-      <header className="flex h-14 items-center px-4 lg:px-6">
-        <Link href="#" className="flex items-center">
-          <Image
-            src="/images/logo.png"
-            alt="ChessStake Logo"
-            width={40}
-            height={40}
-            className="mr-2"
-          />
-          <span className="text-lg font-bold">ChessStake</span>
-        </Link>
+    {/* Header */}
+    <header className="flex h-14 items-center px-4 lg:px-6">
+      <Link href="#" className="flex items-center">
+        <Image
+          src="/images/logo.png"
+          alt="ChessStake Logo"
+          width={40}
+          height={40}
+          className="mr-2"
+        />
+        <span className="text-lg font-bold">ChessStake</span>
+      </Link>
+      
+      {/* Desktop Navigation */}
+      {!isMobile && (
         <nav className="ml-auto flex gap-4 sm:gap-6">
           <Link
             href="#how-it-works"
@@ -90,7 +113,49 @@ export default function LandingPage() {
             Our mission
           </Link>
         </nav>
-      </header>
+      )}
+
+      {/* Mobile Hamburger Menu */}
+      {isMobile && (
+        <div className="ml-auto">
+          <button
+            onClick={toggleMenu}
+            className="p-2 text-gray-500 hover:text-gray-600"
+            aria-label="Toggle menu"
+          >
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
+      )}
+    </header>
+
+    {/* Mobile Navigation Menu */}
+    {isMobile && isMenuOpen && (
+      <nav className="bg-white py-2 px-4">
+        <Link
+          href="#how-it-works"
+          className="block py-2 text-sm font-medium hover:underline"
+          onClick={toggleMenu}
+        >
+          How it works
+        </Link>
+        <Link
+          href="#pricing"
+          className="block py-2 text-sm font-medium hover:underline"
+          onClick={toggleMenu}
+        >
+          Prices
+        </Link>
+        <Link
+          href="#mission"
+          className="block py-2 text-sm font-medium hover:underline"
+          onClick={toggleMenu}
+        >
+          Our mission
+        </Link>
+      </nav>
+    )}
+
 
       {/* Main Content */}
       <main className="flex-1">
