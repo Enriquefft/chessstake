@@ -23,6 +23,9 @@ const CHANGE_DURATION = 1000;
 
 /**
  * Random chess piece component
+ * @param props - Component props
+ * @param props.className - Component class name
+ * @returns Chess piece image which changes over time
  */
 export function RandomChessPiece({ className }: { className?: string }) {
   const [piece, setPiece] =
