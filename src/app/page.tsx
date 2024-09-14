@@ -155,7 +155,6 @@ export default function LandingPage() {
                 title="Monthly Subscription"
                 price="$9.99"
                 features={[
-                  { icon: DollarSign, text: "Unlimited matches" },
                   { icon: DollarSign, text: "Real money wagering" },
                   { icon: Brain, text: "Personalized AI opponents" },
                 ]}
