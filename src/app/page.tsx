@@ -53,9 +53,11 @@ const PricingCard = ({
         </li>
       ))}
     </ul>
-    <a href={buildWhatsappLink()} target="_blank" rel="noreferrer">
-      <Button className="w-full">{buttonText}</Button>
-    </a>
+    <Button className="w-full" asChild>
+      <a href={buildWhatsappLink()} target="_blank" rel="noreferrer">
+        {buttonText}
+      </a>
+    </Button>
   </div>
 );
 
