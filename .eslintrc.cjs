@@ -123,7 +123,7 @@ const tsRules = {
    * Disabled to allow for module augmentation
    * 'type' is still preferred
    */
-  "@typescript-eslint/consistent-type-definitions": "warn",
+  "@typescript-eslint/consistent-type-definitions": ["warn", "type"],
 
   // Allow Nextjs server actions to be async without await
   "@typescript-eslint/require-await": "off",

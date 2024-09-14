@@ -4,6 +4,7 @@ import { DollarSign, Brain, Trophy, type LucideProps } from "lucide-react";
 import Image from "next/image";
 import { RandomChessPiece } from "@/components/ChessBackground/ChessBackground";
 import type { ForwardRefExoticComponent, RefAttributes } from "react";
+import { buildWhatsappLink } from "@/lib/whatsapp";
 
 type Icon = ForwardRefExoticComponent<
   Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
@@ -52,7 +53,9 @@ const PricingCard = ({
         </li>
       ))}
     </ul>
-    <Button className="w-full">{buttonText}</Button>
+    <a href={buildWhatsappLink()} target="_blank" rel="noreferrer">
+      <Button className="w-full">{buttonText}</Button>
+    </a>
   </div>
 );
 
@@ -105,10 +108,6 @@ export default function LandingPage() {
                   Wager against personalized AI opponents and grow as a player.
                   Join ChessStake today!
                 </p>
-              </div>
-              <div className="space-x-4">
-                <Button>Get Started</Button>
-                <Button variant="outline">Learn More</Button>
               </div>
             </div>
           </div>

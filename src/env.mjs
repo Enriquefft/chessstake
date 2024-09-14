@@ -13,9 +13,11 @@ export const env = createEnv({
   },
   client: {
     NEXT_PUBLIC_PROJECT_NAME: z.string(),
+    NEXT_PUBLIC_CHESSSTAKE_PHONE: z.string(),
   },
   runtimeEnv: {
     NEXT_PUBLIC_PROJECT_NAME: process.env["NEXT_PUBLIC_PROJECT_NAME"],
+    NEXT_PUBLIC_CHESSSTAKE_PHONE: process.env["NEXT_PUBLIC_CHESSSTAKE_PHONE"],
     DRIZZLE_DATABASE_URL: process.env["DRIZZLE_DATABASE_URL"],
 
     AUTH_SECRET: process.env["AUTH_SECRET"],
