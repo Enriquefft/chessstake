@@ -20,8 +20,8 @@ const FeatureCard = ({
 }) => (
   <div className="flex flex-col items-center text-center">
     <Icon className="mb-4 size-12" aria-hidden="true" />
-    <h3 className="mb-2 text-xl font-bold">{title}</h3>
-    <p className="text-gray-500">{description}</p>
+    <h3 className="mb-2 text-xl font-bold md:text-2xl">{title}</h3>
+    <p className="text-gray-500 md:text-lg">{description}</p>
   </div>
 );
 
@@ -39,9 +39,11 @@ const PricingCard = ({
   }[];
   buttonText: string;
 }) => (
-  <div className="flex flex-col rounded-lg bg-gray-100 p-6 shadow-sm">
-    <h3 className="mb-4 text-center text-2xl font-bold">{title}</h3>
-    <div className="mb-4 text-center text-4xl font-bold">{price}</div>
+  <div className="flex flex-col rounded-lg bg-gray-100 p-6 shadow-sm md:p-8 lg:p-10">
+    <h3 className="mb-4 text-center text-2xl font-bold md:text-3xl">{title}</h3>
+    <div className="mb-4 text-center text-4xl font-bold md:text-5xl">
+      {price}
+    </div>
     <ul className="mb-6 space-y-2">
       {features.map((feature, index) => (
         <li key={index} className="flex items-center">
@@ -71,7 +73,7 @@ export default function LandingPage() {
       <main className="flex-1">
         {/* Hero Section */}
         <section className="min-h-[50vh] w-full py-12 md:py-24 lg:py-32 xl:py-48">
-          <RandomChessPiece className="mx-auto" />
+          <RandomChessPiece className="mx-auto size-24 md:size-32 lg:size-48" />
           <div className="container z-10 px-4 md:px-6">
             <div className="flex flex-col items-center space-y-4 text-center">
               <div className="space-y-2">
@@ -83,6 +85,9 @@ export default function LandingPage() {
                   Join ChessStake today!
                 </p>
               </div>
+              <Button size="lg" className="mt-4" asChild>
+                <Link href="https://www.chessstake.com/">Get Started</Link>
+              </Button>
             </div>
           </div>
         </section>
@@ -96,7 +101,7 @@ export default function LandingPage() {
             <h2 className="mb-8 text-center text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
               How It Works
             </h2>
-            <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-10 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
               <FeatureCard
                 Icon={DollarSign}
                 title="Wager"
@@ -122,7 +127,7 @@ export default function LandingPage() {
             <h2 className="mb-8 text-center text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
               Simple Pricing
             </h2>
-            <div className="mx-auto max-w-sm">
+            <div className="mx-auto max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl">
               <PricingCard
                 title="Monthly Subscription"
                 price="$9.99"
