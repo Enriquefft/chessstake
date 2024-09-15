@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { DollarSign, Brain, Trophy, type LucideProps } from "lucide-react";
-import Image from "next/image";
-import { RandomChessPiece } from "@/components/ChessBackground/ChessBackground";
+import { RandomChessPiece } from "@/components/RandomPiece";
 import type { ForwardRefExoticComponent, RefAttributes } from "react";
+import Header from "@/components/landing/Header";
 
 type Icon = ForwardRefExoticComponent<
   Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
@@ -65,32 +65,7 @@ export default function LandingPage() {
   return (
     <div className="flex min-h-screen flex-col bg-white text-black">
       {/* Header */}
-      <header className="flex h-14 items-center px-4 lg:px-6">
-        <Link href="#" className="flex items-center">
-          <Image
-            src="/images/logo.png"
-            alt="ChessStake Logo"
-            width={40}
-            height={40}
-            className="mr-2"
-          />
-          <span className="text-lg font-bold">ChessStake</span>
-        </Link>
-        <nav className="ml-auto flex gap-4 sm:gap-6">
-          <Link
-            href="#how-it-works"
-            className="text-sm font-medium hover:underline"
-          >
-            How it works
-          </Link>
-          <Link href="#pricing" className="text-sm font-medium hover:underline">
-            Prices
-          </Link>
-          <Link href="#mission" className="text-sm font-medium hover:underline">
-            Our mission
-          </Link>
-        </nav>
-      </header>
+      <Header />
 
       {/* Main Content */}
       <main className="flex-1">
