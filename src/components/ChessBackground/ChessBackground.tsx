@@ -19,7 +19,7 @@ const getRandomChessPiece = () => {
   return piece;
 };
 
-const CHANGE_DURATION = 500;
+const CHANGE_DURATION = 1000;
 
 /**
  * Random chess piece component
