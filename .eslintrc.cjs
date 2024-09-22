@@ -60,7 +60,7 @@ const jsRules = {
     "error",
     {
       min: 3,
-      exceptions: ["_", "__", "id", "db", "cn", "sm", "lg", "to"],
+      exceptions: ["_", "__", "id", "db", "cn", "sm", "lg", "tx","to"],
     },
   ],
   "sort-imports": "off",
@@ -161,6 +161,8 @@ const config = {
     "experimental",
     "src/components/ui/*",
     "public/**/*",
+    "src/hooks/use-toast.ts",
+    "**/drizzle/**/*",
   ],
   parserOptions,
   extends: [

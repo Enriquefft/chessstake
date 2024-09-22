@@ -4,9 +4,19 @@ import {
   text,
   primaryKey,
   integer,
+  pgEnum,
 } from "drizzle-orm/pg-core";
+
 import type { AdapterAccountType } from "next-auth/adapters";
-import { schema } from ".";
+import { schema } from "./schema";
+import { relations } from "drizzle-orm";
+import { createInsertSchema } from "drizzle-zod";
+
+export const levelEnum = pgEnum("level", [
+  "principiante",
+  "intermedio",
+  "avanzado",
+]);
 
 export const users = schema.table("user", {
   id: text("id")
@@ -16,7 +26,26 @@ export const users = schema.table("user", {
   email: text("email").unique(),
   emailVerified: timestamp("emailVerified", { mode: "date" }),
   image: text("image"),
+  hasProfile: boolean("hasProfile").default(false),
 });
+
+export const profile = schema.table("profile", {
+  userId: text("userId")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  dni: text("dni").primaryKey(),
+  username: text("username").notNull(),
+  level: levelEnum("level").notNull(),
+});
+export const profileInsertionSchema = createInsertSchema(profile);
+export type ProfileInsertion = typeof profile.$inferInsert;
+
+export const userRelations = relations(users, ({ one }) => ({
+  profile: one(profile),
+}));
+export const profileRelatiosn = relations(profile, ({ one }) => ({
+  user: one(users, { fields: [profile.userId], references: [users.id] }),
+}));
 
 export const accounts = schema.table(
   "account",
