@@ -5,6 +5,7 @@ import type {
   DragStartEventDetail,
   DropEventDetail,
   MouseoverSquareEventDetail,
+  SnapEndEventDetail,
 } from "@/lib/chess-types";
 import { useChessGame } from "@/hooks/useChessGame";
 import { useStockfish } from "@/hooks/useStockfish";
@@ -49,7 +50,7 @@ export default function ChessGame({ level }: { level: DifficultyLevel }) {
    * @param event
    */
   function onDragStart(event: CustomEvent<DragStartEventDetail>) {
-    const { source, piece } = event.detail;
+    const { piece } = event.detail;
 
     // Do not pick up pieces if the game is over
     if (gameRef.current.isGameOver()) {
@@ -91,12 +92,7 @@ export default function ChessGame({ level }: { level: DifficultyLevel }) {
       } as ChessMove;
 
       if (gameRef.current.turn() === "w") {
-        const result = gameRef.current.move(move);
-
-        if (result === null) {
-          setAction("snapback");
-          return;
-        }
+        gameRef.current.move(move);
 
         boardRef.current!.setPosition(gameRef.current.fen());
 
@@ -162,9 +158,12 @@ export default function ChessGame({ level }: { level: DifficultyLevel }) {
 
   /**
    *
+   * @param event
    */
-  function onSnapEnd() {
+  function onSnapEnd(event: CustomEvent<SnapEndEventDetail>) {
     // Do nothing
+    console.log("onSnapEnd");
+    console.log(event);
   }
 
   return (

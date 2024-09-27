@@ -2,8 +2,14 @@ import { auth } from "@/auth";
 
 const loginPath = "/auth/login";
 const profilePath = "/auth/profile";
+const landingPath = "/";
 
 export default auth((request) => {
+  // Allow all requests to the landing page
+  if (request.nextUrl.pathname === landingPath) {
+    return undefined;
+  }
+
   // New user
   if (!request.auth && request.nextUrl.pathname !== loginPath) {
     return Response.redirect(new URL(loginPath, request.nextUrl.origin));

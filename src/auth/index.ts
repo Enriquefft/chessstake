@@ -23,6 +23,7 @@ declare module "next-auth" {
     user: {
       // Extra user information needed in the session
       hasProfile: boolean;
+      board_state?: string;
 
       /**
        * By default, TypeScript merges new interface properties and overwrites existing ones.

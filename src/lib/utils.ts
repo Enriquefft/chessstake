@@ -75,7 +75,6 @@ export function highlightPreMoveSquares(from: Square, to: Square) {
 }
 
 /**
- *
  * @param game
  * @param setStatus
  */
@@ -100,37 +99,26 @@ export function updateStatus(game: Chess, setStatus: (status: string) => void) {
 
   setStatus(statusText);
 }
-export interface DifficultyLevel {
-  name: string;
+export type DifficultyLevel = {
   skillLevel?: number; // Made optional
   depth?: number; // Made optional
   elo?: number; // Add elo property
-}
+};
 
-export const difficultyLevels: DifficultyLevel[] = [
-  { name: "baby", elo: 200 },
-  { name: "Easy", skillLevel: 1, depth: 5 },
-  { name: "Medium", skillLevel: 10, depth: 10 },
-  { name: "Hard", skillLevel: 20, depth: 15 },
-];
+const difficultyLevels = {
+  baby: { elo: 200 },
+  easy: { skillLevel: 1, depth: 5 },
+  medium: { skillLevel: 10, depth: 10 },
+  hard: { skillLevel: 20, depth: 15 },
+} as const satisfies Record<string, DifficultyLevel>;
 
 const levelSchema = z.enum(["baby", "easy", "medium", "hard"]);
 /**
- *
- * @param level
+ * Gets the necessary stockfish configuration for a given level
+ * @param level - The level of difficulty
+ * @returns The stockfish configuration
  */
 export function getLevel(level: string) {
   const parsedLevel = levelSchema.parse(level);
-  switch (parsedLevel) {
-    case "baby":
-      return difficultyLevels[0];
-    case "easy":
-      return difficultyLevels[1];
-    case "medium":
-      return difficultyLevels[2];
-    case "hard":
-      return difficultyLevels[3];
-    default:
-      throw new Error("Invalid level");
-  }
+  return difficultyLevels[parsedLevel];
 }
