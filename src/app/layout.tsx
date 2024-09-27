@@ -1,24 +1,16 @@
 import "@/styles/globals.css";
+export { metadata } from "@/metadata";
+import { Toaster } from "@/components/ui/toaster";
 
 import { inter as fontSans } from "@/styles/fonts";
 
 import { cn } from "@/lib/utils";
-import type { Metadata } from 'next';
 
 /**
  * @param layoutPros - The root layout component props
  * @param layoutPros.children - The layout children
  * @returns The root layout component
  */
-
-
-export const metadata: Metadata = {
-  icons: {
-    icon: "/favicon.ico",
-  },
-}
-
-
 export default function RootLayout({
   children,
 }: {
@@ -33,6 +25,7 @@ export default function RootLayout({
         )}
       >
         {children}
+        <Toaster />
       </body>
     </html>
   );
