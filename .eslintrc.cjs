@@ -40,7 +40,7 @@ const reactRules = {
   "react/jsx-no-bind": "off",
 
   "react/jsx-no-literals": "off",
-  "react/jsx-max-depth": ["warn", { max: 5 }],
+  "react/jsx-max-depth": ["warn", { max: 6 }],
 
   "react/require-default-props": "off",
 };
@@ -60,7 +60,7 @@ const jsRules = {
     "error",
     {
       min: 3,
-      exceptions: ["_", "__", "id", "db", "cn", "sm", "lg"],
+      exceptions: ["_", "__", "id", "db", "cn", "sm", "lg", "to"],
     },
   ],
   "sort-imports": "off",
@@ -71,6 +71,8 @@ const jsRules = {
   // Prefer cyclomatic complexity
   "max-statements": "off",
   "max-lines-per-function": "off",
+
+  "max-depth": ["warn", 6],
 
   "no-undefined": "off",
 
@@ -88,6 +90,8 @@ const jsRules = {
 
 /** @type {import('eslint').Linter.Config['rules']}*/
 const tsRules = {
+  "@typescript-eslint/no-non-null-assertion": "off",
+
   "@typescript-eslint/naming-convention": ["error"],
 
   // Return types are evil
@@ -156,6 +160,7 @@ const config = {
     "**/schema.gen*",
     "experimental",
     "src/components/ui/*",
+    "public/**/*",
   ],
   parserOptions,
   extends: [

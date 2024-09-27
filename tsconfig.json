@@ -11,7 +11,8 @@
     "**/*.cjs",
     "**/*.mjs",
     ".eslintrc.cjs",
-    "happydom.ts"
+    "happydom.ts",
+    "public/**/*",
   ],
 
   "exclude": ["node_modules"],
