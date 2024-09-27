@@ -60,7 +60,7 @@ const jsRules = {
     "error",
     {
       min: 3,
-      exceptions: ["_", "__", "id", "db", "cn", "sm", "lg", "tx","to"],
+      exceptions: ["_", "__", "id", "db", "cn", "sm", "lg", "tx", "to"],
     },
   ],
   "sort-imports": "off",
@@ -117,7 +117,7 @@ const tsRules = {
     {
       enforceConst: true,
       ignoreEnums: true,
-      ignore: [-1, 0, 1, 2],
+      ignore: [-1, 0, 1, 2, 3, 4],
       ignoreNumericLiteralTypes: true,
       ignoreReadonlyClassProperties: true,
     },
@@ -127,7 +127,7 @@ const tsRules = {
    * Disabled to allow for module augmentation
    * 'type' is still preferred
    */
-  "@typescript-eslint/consistent-type-definitions": ["warn", "type"],
+  "@typescript-eslint/consistent-type-definitions": "off",
 
   // Allow Nextjs server actions to be async without await
   "@typescript-eslint/require-await": "off",

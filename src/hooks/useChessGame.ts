@@ -7,7 +7,8 @@ import { updateStatus } from "@/lib/utils";
  * @param setStatus
  */
 export function useChessGame(setStatus: (status: string) => void) {
-  const boardRef = useRef<Required<JSX.IntrinsicElements["chess-board"]>>(null);
+  const boardRef =
+    useRef<Required<React.JSX.IntrinsicElements["chess-board"]>>(null);
   const gameRef = useRef(new Chess());
   const [preMove, setPreMove] = useState<ChessMove | null>(null);
 
@@ -46,7 +47,8 @@ export function useChessGame(setStatus: (status: string) => void) {
    *
    */
   function resetGame() {
-    boardRef.current?.setPosition("start");
+    // Reset with animation fails with undefined srcSquare
+    boardRef.current?.setPosition("start", false);
     gameRef.current.reset();
     localStorage.removeItem("savedGame");
     updateStatus(gameRef.current, setStatus);

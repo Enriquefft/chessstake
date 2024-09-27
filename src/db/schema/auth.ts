@@ -27,6 +27,7 @@ export const users = schema.table("user", {
   emailVerified: timestamp("emailVerified", { mode: "date" }),
   image: text("image"),
   hasProfile: boolean("hasProfile").default(false),
+  board_state: text("board_state"),
 });
 
 export const profile = schema.table("profile", {

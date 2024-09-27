@@ -12,7 +12,7 @@
     "**/*.mjs",
     ".eslintrc.cjs",
     "happydom.ts",
-    "public/**/*"
+    "public/stockfish/stockfish.js"
   ],
 
   "exclude": ["node_modules"],

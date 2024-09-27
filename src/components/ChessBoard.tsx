@@ -5,18 +5,21 @@ import type {
   DragStartEventDetail,
   DropEventDetail,
   MouseoverSquareEventDetail,
+  SnapEndEventDetail,
 } from "@/lib/chess-types";
 
-interface ChessBoardProps {
-  boardRef: React.RefObject<Required<JSX.IntrinsicElements["chess-board"]>>;
+type ChessBoardProps = {
+  boardRef: React.RefObject<
+    Required<React.JSX.IntrinsicElements["chess-board"]>
+  >;
   highlightStylesRef: React.MutableRefObject<HTMLStyleElement | null>;
   onDragStart: (e: CustomEvent<DragStartEventDetail>) => void;
   onDrop: (e: CustomEvent<DropEventDetail>) => void;
   onMouseoverSquare: (e: CustomEvent<MouseoverSquareEventDetail>) => void;
   onMouseoutSquare: () => void;
-  onSnapEnd: () => void;
+  onSnapEnd: (e: CustomEvent<SnapEndEventDetail>) => void;
   draggablePieces: boolean;
-}
+};
 
 const ChessBoard: React.FC<ChessBoardProps> = ({
   boardRef,
@@ -80,7 +83,7 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
 
   return (
     <chess-board
-      class="mb-4 size-80 md:size-96"
+      className="mb-4 size-80 md:size-96"
       draggable-pieces={draggablePieces}
       position="start"
       ref={boardRef}

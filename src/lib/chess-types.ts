@@ -4,18 +4,28 @@ export type Square =
 
 export type Piece = string | false;
 
-export interface DragStartEventDetail {
+export type DragStartEventDetail = {
   source: Square;
   piece: string;
-}
+};
 
-export interface DropEventDetail {
+export type DropEventDetail = {
   source: Square;
   target?: Square | "offboard";
   setAction: (action: "snapback" | "trash" | "move") => void;
-}
+};
 
-export interface MouseoverSquareEventDetail {
+export type MouseoverSquareEventDetail = {
   square: Square;
   piece: Piece;
-}
+};
+
+export type SnapbackEventDetail = {
+  piece: Piece;
+  square: Square;
+  position: unknown;
+};
+
+export type SnapEndEventDetail = {
+  source: Square;
+};

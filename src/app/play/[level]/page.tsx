@@ -2,10 +2,10 @@ import { getLevel } from "@/lib/utils";
 import ChessGame from "./ChessGame";
 
 /**
- *
- * @param root0
- * @param root0.params
- * @param root0.params.level
+ * @param args - Page arguments
+ * @param args.params - URL path parameters
+ * @param args.params.level - Level of the AI
+ * @returns Page component
  */
 export default async function ChessPage({
   params,
@@ -13,10 +13,6 @@ export default async function ChessPage({
   params: { level: string };
 }) {
   const level = getLevel(params.level);
-
-  if (level === undefined) {
-    return <div>Invalid level</div>;
-  }
 
   return <ChessGame level={level} />;
 }
