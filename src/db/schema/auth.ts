@@ -12,7 +12,7 @@ import { schema } from "./schema";
 import { relations } from "drizzle-orm";
 import { createInsertSchema } from "drizzle-zod";
 
-export const levelEnum = pgEnum("level", [
+export const userLevelEnum = pgEnum("user_level", [
   "principiante",
   "intermedio",
   "avanzado",
@@ -28,6 +28,9 @@ export const users = schema.table("user", {
   image: text("image"),
   hasProfile: boolean("hasProfile").default(false),
   board_state: text("board_state"),
+  last_match: timestamp("last_match", { mode: "date" }),
+
+  active: boolean("active").notNull().default(false),
 });
 
 export const profile = schema.table("profile", {
@@ -35,8 +38,9 @@ export const profile = schema.table("profile", {
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
   dni: text("dni").primaryKey(),
-  username: text("username").notNull(),
-  level: levelEnum("level").notNull(),
+  username: text("username").unique().notNull(),
+  phone: text("phone").unique(),
+  level: userLevelEnum("level").notNull(),
 });
 export const profileInsertionSchema = createInsertSchema(profile);
 export type ProfileInsertion = typeof profile.$inferInsert;
@@ -108,9 +112,9 @@ export const authenticators = schema.table(
     credentialBackedUp: boolean("credentialBackedUp").notNull(),
     transports: text("transports"),
   },
-  (authenticator) => ({
-    compositePK: primaryKey({
-      columns: [authenticator.userId, authenticator.credentialID],
-    }),
-  }),
+  // (authenticator) => ({
+  //   compositePK: primaryKey({
+  //     columns: [authenticator.userId, authenticator.credentialID],
+  //   }),
+  // }),
 );

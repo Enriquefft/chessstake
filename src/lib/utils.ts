@@ -112,7 +112,8 @@ const difficultyLevels = {
   hard: { skillLevel: 20, depth: 15 },
 } as const satisfies Record<string, DifficultyLevel>;
 
-const levelSchema = z.enum(["baby", "easy", "medium", "hard"]);
+export const levels = ["baby", "easy", "medium", "hard"] as const;
+const levelSchema = z.enum(levels);
 /**
  * Gets the necessary stockfish configuration for a given level
  * @param level - The level of difficulty
