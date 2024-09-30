@@ -5,6 +5,10 @@ import { eq } from "drizzle-orm";
 import * as process from "process";
 import chalk from "chalk";
 
+/**
+ *
+ * @param match_id
+ */
 async function isWinner(match_id: number) {
   const userWon = (
     await db.query.matches.findFirst({

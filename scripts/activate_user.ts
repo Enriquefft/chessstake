@@ -3,6 +3,10 @@ import { db } from "@/db";
 import { users, profile } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
+/**
+ *
+ * @param userId
+ */
 async function activateUserById(userId: string) {
   try {
     await db.update(users).set({ active: true }).where(eq(users.id, userId));
@@ -12,6 +16,10 @@ async function activateUserById(userId: string) {
   }
 }
 
+/**
+ *
+ * @param email
+ */
 async function activateUserByEmail(email: string) {
   try {
     await db.update(users).set({ active: true }).where(eq(users.email, email));
@@ -21,6 +29,10 @@ async function activateUserByEmail(email: string) {
   }
 }
 
+/**
+ *
+ * @param phone
+ */
 async function activateUserByPhone(phone: string) {
   const userId = (
     await db.query.profile.findFirst({
@@ -38,6 +50,10 @@ async function activateUserByPhone(phone: string) {
   await activateUserById(userId);
 }
 
+/**
+ *
+ * @param username
+ */
 async function activateUserByUsername(username: string) {
   const userId = (
     await db.query.profile.findFirst({
@@ -60,6 +76,9 @@ const allowedTypes = ["id", "email", "phone", "username"] as const;
 type IdentifierType = (typeof allowedTypes)[number];
 
 // Function to display usage instructions
+/**
+ *
+ */
 function showUsage() {
   console.log(`
 Usage: activate-user <type> <value>
@@ -79,6 +98,9 @@ Examples:
 }
 
 // Main async function
+/**
+ *
+ */
 async function main() {
   const args = process.argv.slice(2);
 
