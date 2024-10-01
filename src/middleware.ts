@@ -1,18 +1,21 @@
 import { auth } from "@/auth";
+import { NextResponse } from "next/server";
 
 const loginPath = "/auth/login";
 const profilePath = "/auth/profile";
 const landingPath = "/";
 
 export default auth((request) => {
+  const { pathname, origin } = request.nextUrl;
+
   // Allow all requests to the landing page
-  if (request.nextUrl.pathname === landingPath) {
+  if (pathname === landingPath) {
     return undefined;
   }
 
   // New user
-  if (!request.auth && request.nextUrl.pathname !== loginPath) {
-    return Response.redirect(new URL(loginPath, request.nextUrl.origin));
+  if (!request.auth && pathname !== loginPath) {
+    return Response.redirect(new URL(loginPath, origin));
   }
   const hasProfileData = request.auth?.user.hasProfile;
 
@@ -20,9 +23,25 @@ export default auth((request) => {
   if (
     hasProfileData !== undefined &&
     !hasProfileData &&
-    request.nextUrl.pathname !== profilePath
+    pathname !== profilePath
   ) {
-    return Response.redirect(new URL(profilePath, request.nextUrl.origin));
+    return Response.redirect(new URL(profilePath, origin));
+  }
+
+  // TODO: Refactor to a cookieless single route approach (mild security issue)
+  if (pathname === "/play/hard") {
+    const accessAllowedCookie = request.cookies.get("accessHard");
+    if (accessAllowedCookie === undefined) {
+      // Redirect to /play if the cookie is not set
+      return Response.redirect(new URL("/play", origin));
+    }
+
+    if (accessAllowedCookie.value === "true") {
+      const response = NextResponse.next();
+      response.cookies.delete("accessHard");
+      return undefined;
+    }
+    return Response.redirect(new URL("/play", origin));
   }
 
   return undefined;

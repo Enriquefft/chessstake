@@ -1,12 +1,18 @@
+"use client";
 import { useRef, useState, useEffect } from "react";
-import { Chess, type Move as ChessMove, validateFen } from "chess.js";
+import { Chess, type Move as ChessMove } from "chess.js";
 import { updateStatus } from "@/lib/utils";
+import { getUserFen, storeUserFen } from "@/lib/user";
 
 /**
  *
  * @param setStatus
+ * @param onGameFinish
  */
-export function useChessGame(setStatus: (status: string) => void) {
+export function useChessGame(
+  setStatus: (status: string) => void,
+  onGameFinish: (game: Chess) => Promise<void>,
+) {
   const boardRef =
     useRef<Required<React.JSX.IntrinsicElements["chess-board"]>>(null);
   const gameRef = useRef(new Chess());
@@ -20,46 +26,48 @@ export function useChessGame(setStatus: (status: string) => void) {
     const game = gameRef.current;
 
     // Load game state from localStorage
-    const savedFen = localStorage.getItem("savedGame");
-    if (savedFen !== null && validateFen(savedFen).ok) {
-      game.load(savedFen);
-      board.setPosition(savedFen);
-    } else {
-      board.setPosition(game.fen());
-    }
+    getUserFen()
+      .then((fen) => {
+        if (fen === undefined) {
+          board.setPosition(game.fen());
+        } else {
+          game.load(fen);
+          board.setPosition(fen);
+        }
+      })
+      .catch(() => {
+        board.setPosition(game.fen());
+      });
 
     // Initialize status
     updateStatus(game, setStatus);
 
     // Save game state on unload
-    const handleUnload = () => {
-      localStorage.setItem("savedGame", game.fen());
+    const handleUnload = async () => {
+      await storeUserFen(game.fen());
     };
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     window.addEventListener("beforeunload", handleUnload);
 
     // Cleanup on unmount
     return () => {
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
       window.removeEventListener("beforeunload", handleUnload);
     };
   }, [setStatus]);
 
-  /**
-   *
-   */
-  function resetGame() {
-    // Reset with animation fails with undefined srcSquare
-    boardRef.current?.setPosition("start", false);
-    gameRef.current.reset();
-    localStorage.removeItem("savedGame");
-    updateStatus(gameRef.current, setStatus);
-    setPreMove(null);
-  }
+  useEffect(() => {
+    if (gameRef.current.isGameOver()) {
+      onGameFinish(gameRef.current).catch((error: unknown) => {
+        console.error(error);
+      });
+    }
+  }, [setStatus, onGameFinish]); // Dependency on status update for the hook to recheck game over
 
   return {
     boardRef,
     gameRef,
     preMove,
     setPreMove,
-    resetGame,
   };
 }

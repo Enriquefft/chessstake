@@ -1,4 +1,3 @@
-"use client";
 import "chessboard-element";
 import { useEffect } from "react";
 import type {
@@ -83,7 +82,7 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
 
   return (
     <chess-board
-      className="mb-4 size-80 md:size-96"
+      className="mb-4"
       draggable-pieces={draggablePieces}
       position="start"
       ref={boardRef}

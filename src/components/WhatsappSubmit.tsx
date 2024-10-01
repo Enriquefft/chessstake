@@ -18,15 +18,15 @@ export const WhatsappButton = ({
   <Button
     {...rest}
     variant="link"
-    className={cn("z-20 size-14 rounded-full bg-white", className)}
+    className={cn("rounded-full bg-white", className)}
   >
     {children}
     <Image
-      className="my-2"
+      className="m-2"
       alt="whatsapp"
-      src="/whatsapp/01_Glyph/01_Digital/03_PNG/Green/Digital_Glyph_Green.png"
-      height={50}
-      width={50}
+      src="/images/whatsapp/01_Glyph/01_Digital/03_PNG/Green/Digital_Glyph_Green.png"
+      height={20}
+      width={20}
     />
   </Button>
 );

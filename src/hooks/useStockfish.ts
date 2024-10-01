@@ -59,17 +59,16 @@ export function useStockfish({
 
     stockfish.postMessage("uci");
 
-    if (level.elo !== undefined) {
+    if (level.skillLevel === undefined) {
       // Set UCI_LimitStrength and UCI_Elo
       stockfish.postMessage("setoption name UCI_LimitStrength value true");
       stockfish.postMessage(`setoption name UCI_Elo value ${level.elo}`);
-    } else if (level.skillLevel !== undefined) {
+    } else {
       // Set Skill Level
       stockfish.postMessage(
         `setoption name Skill Level value ${level.skillLevel}`,
       );
     }
-
     stockfish.onmessage = (event: MessageEvent<unknown>) => {
       const message = event.data;
 

@@ -2,6 +2,7 @@
 import { auth } from "@/auth";
 import { db } from "@/db";
 import { users } from "@/db/schema";
+import { validateFen } from "chess.js";
 import { eq } from "drizzle-orm";
 
 /**
@@ -9,7 +10,15 @@ import { eq } from "drizzle-orm";
  */
 export async function storeUserFen(fen: string) {
   const user_id = (await auth())?.user.id;
+
+  const { ok, error } = validateFen(fen);
+  if (!ok || error !== undefined) {
+    console.log("Invalid FEN: ", error);
+    throw new Error(`Invalid FEN: ${error}`);
+  }
+
   if (user_id === undefined) {
+    console.log("User not found");
     throw new Error("User not found");
   }
 
@@ -26,4 +35,18 @@ export async function getUserFen() {
     throw new Error("User not found");
   }
   return user.board_state;
+}
+
+/**
+ * Reset the last match for the current user
+ */
+export async function resetLastMatch() {
+  const user_id = (await auth())?.user.id;
+  if (user_id === undefined) {
+    throw new Error("User not found");
+  }
+  await db
+    .update(users)
+    .set({ last_match: new Date() })
+    .where(eq(users.id, user_id));
 }

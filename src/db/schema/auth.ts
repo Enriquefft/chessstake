@@ -11,12 +11,15 @@ import type { AdapterAccountType } from "next-auth/adapters";
 import { schema } from "./schema";
 import { relations } from "drizzle-orm";
 import { createInsertSchema } from "drizzle-zod";
+import { z } from "zod";
 
-export const userLevelEnum = pgEnum("user_level", [
+export const userLevelEnum = pgEnum("user_level_enum", [
   "principiante",
   "intermedio",
   "avanzado",
 ]);
+const PHONE_LENGTH = 9;
+const DNI_LENGTH = 8;
 
 export const users = schema.table("user", {
   id: text("id")
@@ -39,10 +42,17 @@ export const profile = schema.table("profile", {
     .references(() => users.id, { onDelete: "cascade" }),
   dni: text("dni").primaryKey(),
   username: text("username").unique().notNull(),
-  phone: text("phone").unique(),
+  phone: text("phone").unique().notNull(),
   level: userLevelEnum("level").notNull(),
 });
-export const profileInsertionSchema = createInsertSchema(profile);
+export const profileInsertionSchema = createInsertSchema(profile, {
+  phone: z.string().regex(new RegExp(`^\\d{${PHONE_LENGTH}}$`, "u"), {
+    message: `Número de teléfono inválido, debe tener ${PHONE_LENGTH} dígitos`,
+  }),
+  dni: z.string().regex(new RegExp(`^\\d{${DNI_LENGTH}}$`, "u"), {
+    message: `DNI inválido, debe tener ${DNI_LENGTH} dígitos`,
+  }),
+});
 export type ProfileInsertion = typeof profile.$inferInsert;
 
 export const userRelations = relations(users, ({ one }) => ({

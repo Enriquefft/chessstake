@@ -5,6 +5,8 @@ import type { Chess } from "chess.js";
 import { z } from "zod";
 import type { Square } from "./chess-types";
 
+import { levels } from "@/db/schema";
+
 /**
  * @param inputs - Class values to merge
  * @returns A tailwindcsj string of merged class names
@@ -99,21 +101,38 @@ export function updateStatus(game: Chess, setStatus: (status: string) => void) {
 
   setStatus(statusText);
 }
-export type DifficultyLevel = {
-  skillLevel?: number; // Made optional
-  depth?: number; // Made optional
-  elo?: number; // Add elo property
-};
 
-const difficultyLevels = {
-  baby: { elo: 200 },
-  easy: { skillLevel: 1, depth: 5 },
-  medium: { skillLevel: 10, depth: 10 },
-  hard: { skillLevel: 20, depth: 15 },
-} as const satisfies Record<string, DifficultyLevel>;
+export type DifficultyLevel = (
+  | {
+      elo: number;
+      skillLevel?: never;
+      depth?: never;
+    }
+  | {
+      skillLevel: number;
+      depth: number;
+      elo: number;
+    }
+) &
+  (
+    | {
+        disabled: true;
+        cost?: never;
+      }
+    | {
+        disabled?: false;
+        cost: number;
+      }
+  );
 
-export const levels = ["baby", "easy", "medium", "hard"] as const;
-const levelSchema = z.enum(levels);
+export const difficultyLevelsInfo = {
+  baby: { elo: 200, disabled: true },
+  easy: { elo: 800, skillLevel: 1, depth: 5, cost: 1 },
+  medium: { elo: 1200, skillLevel: 10, depth: 10, cost: 2 },
+  hard: { elo: 1600, skillLevel: 20, depth: 15, cost: 3 },
+} as const satisfies Record<(typeof levels)[number], DifficultyLevel>;
+
+export const levelSchema = z.enum(levels);
 /**
  * Gets the necessary stockfish configuration for a given level
  * @param level - The level of difficulty
@@ -121,5 +140,6 @@ const levelSchema = z.enum(levels);
  */
 export function getLevel(level: string) {
   const parsedLevel = levelSchema.parse(level);
-  return difficultyLevels[parsedLevel];
+
+  return difficultyLevelsInfo[parsedLevel];
 }

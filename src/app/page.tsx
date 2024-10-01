@@ -25,41 +25,6 @@ const FeatureCard = ({
   </div>
 );
 
-const PricingCard = ({
-  title,
-  price,
-  features,
-  buttonText,
-}: {
-  title: string;
-  price: string;
-  features: {
-    icon?: Icon;
-    text: string;
-  }[];
-  buttonText: string;
-}) => (
-  <div className="flex flex-col rounded-lg bg-gray-100 p-6 shadow-sm md:p-8 lg:p-10">
-    <h3 className="mb-4 text-center text-2xl font-bold md:text-3xl">{title}</h3>
-    <div className="mb-4 text-center text-4xl font-bold md:text-5xl">
-      {price}
-    </div>
-    <ul className="mb-6 space-y-2">
-      {features.map((feature, index) => (
-        <li key={index} className="flex items-center">
-          {feature.icon && (
-            <feature.icon className="mr-2 size-4" aria-hidden="true" />
-          )}
-          <span>{feature.text}</span>
-        </li>
-      ))}
-    </ul>
-    <Button className="w-full" asChild>
-      <Link href="https://www.chessstake.com/">{buttonText}</Link>
-    </Button>
-  </div>
-);
-
 /**
  *
  */
@@ -81,13 +46,10 @@ export default function LandingPage() {
                   Monetize your chess skills
                 </h1>
                 <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl">
-                  Wager against personalized AI opponents and grow as a player.
-                  Join ChessStake today!
+                  Earn on every game you play, choose your level, play, win, and
+                  cash out.
                 </p>
               </div>
-              <Button size="lg" className="mt-4" asChild>
-                <Link href="https://www.chessstake.com/">Get Started</Link>
-              </Button>
             </div>
           </div>
         </section>
@@ -104,59 +66,49 @@ export default function LandingPage() {
             <div className="grid gap-10 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
               <FeatureCard
                 Icon={DollarSign}
-                title="Wager"
-                description="Play against our AI and bet on your skills."
+                title="Earn"
+                description="Play against our AI levels, and if you win, we pay you."
               />
               <FeatureCard
                 Icon={Brain}
-                title="Learn"
-                description="Improve your game with personalized AI opponents."
+                title="Improve"
+                description="Improve your level while earning money."
               />
               <FeatureCard
                 Icon={Trophy}
-                title="Earn"
-                description="Win matches and earn real money."
-              />
-            </div>
-          </div>
-        </section>
-
-        {/* Pricing Section */}
-        <section id="pricing" className="w-full py-12 md:py-24 lg:py-32">
-          <div className="container px-4 md:px-6">
-            <h2 className="mb-8 text-center text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-              Simple Pricing
-            </h2>
-            <div className="mx-auto max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl">
-              <PricingCard
-                title="Monthly Subscription"
-                price="$9.99"
-                features={[
-                  { icon: DollarSign, text: "Real money wagering" },
-                  { icon: Brain, text: "Personalized AI opponents" },
-                ]}
-                buttonText="Subscribe Now"
+                title="Top Stakers"
+                description="Join the top players' ranking and win cash prizes."
               />
             </div>
           </div>
         </section>
 
         {/* Our Mission Section */}
-        <section
-          id="mission"
-          className="w-full bg-gray-100 py-12 md:py-24 lg:py-32"
-        >
+        <section id="mission" className="w-full py-12 md:py-24 lg:py-32">
+          <div className="container px-4 md:px-6">
+            <h2 className="mb-8 text-center text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
+              Our Mission
+              <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl">
+                We&apos;re dedicated to helping chess players monetize their
+                skills and grow as players. With ChessStake, you can turn your
+                passion into profit while continuously improving your game.
+              </p>
+            </h2>
+            <div className="mx-auto max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl"></div>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section className="w-full bg-gray-100 py-12 md:py-24 lg:py-32">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center space-y-4 text-center">
               <div className="space-y-2">
                 <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-                  Our Mission
+                  ¿Are you ready?
                 </h2>
-                <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl">
-                  We&apos;re dedicated to helping chess players monetize their
-                  skills and grow as players. With ChessStake, you can turn your
-                  passion into profit while continuously improving your game.
-                </p>
+                <Button size="lg" className="mt-4" asChild>
+                  <Link href="/play">Get Started</Link>
+                </Button>
               </div>
             </div>
           </div>

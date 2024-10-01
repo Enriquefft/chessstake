@@ -25,6 +25,8 @@ import {
 import { profileInsertionSchema } from "@/db/schema";
 import type { z } from "zod";
 import { setUserProfile } from "@/lib/auth";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const profileCompletionSchema = profileInsertionSchema.omit({
   userId: true,
@@ -39,14 +41,57 @@ type ProfileCompletion = z.infer<typeof profileCompletionSchema>;
 export default function ProfilePage({ userId }: { userId: string }) {
   const form = useForm<ProfileCompletion>({
     resolver: zodResolver(profileCompletionSchema),
+    defaultValues: {
+      dni: "",
+      username: "",
+      level: undefined,
+      phone: "",
+    },
   });
+  const router = useRouter();
+  const [generalError, setGeneralError] = useState<string | null>(null); // State for server errors
   const onSubmit = async (data: ProfileCompletion) => {
-    await setUserProfile(userId, data);
+    try {
+      setGeneralError(null); // Reset general error before submission
+      await setUserProfile(userId, data);
+      router.push("/activation");
+    } catch (error: unknown) {
+      if (!(error instanceof Error)) {
+        setGeneralError(
+          "An unexpected error occurred. Please try again later.",
+        );
+        return;
+      }
+      const errorMessage = error.message.toLowerCase();
+
+      if (errorMessage.includes("profile_username_unique")) {
+        form.setError("username", {
+          type: "manual",
+          message: "This username is already taken. Please choose another one.",
+        });
+      } else if (errorMessage.includes("profile_phone_unique")) {
+        form.setError("phone", {
+          type: "manual",
+          message: "This phone is already taken. Please choose another one.",
+        });
+      } else if (errorMessage.includes("profile_pkey")) {
+        setGeneralError("A profile for this user already exists.");
+      } else {
+        setGeneralError(
+          "An unexpected error occurred. Please try again later.",
+        );
+      }
+    }
   };
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
+        {generalError !== null && (
+          <div className="mb-4 rounded bg-red-100 p-4 text-red-700">
+            {generalError}
+          </div>
+        )}
         <FormField
           control={form.control}
           name="level"
@@ -97,6 +142,20 @@ export default function ProfilePage({ userId }: { userId: string }) {
                 <Input placeholder="username" {...field} />
               </FormControl>
               <FormDescription>This is your username</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          name="phone"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Phone</FormLabel>
+              <FormControl>
+                <Input placeholder="phone" {...field} />
+              </FormControl>
+              <FormDescription>This is your phone number</FormDescription>
               <FormMessage />
             </FormItem>
           )}

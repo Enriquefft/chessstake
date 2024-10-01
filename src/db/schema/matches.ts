@@ -4,18 +4,20 @@ import { schema } from "./schema";
 import { relations } from "drizzle-orm";
 import { createInsertSchema } from "drizzle-zod";
 
-import { levels } from "@/lib/utils";
+export const levels = ["baby", "easy", "medium", "hard"] as const;
 
-export const aiLevelEnum = pgEnum("ai_level", levels);
+export const aiLevelEnum = pgEnum("ai_level_enum", levels);
+
 export const colorEnum = pgEnum("color", ["white", "black"]);
 export const matches = schema.table("matches", {
   id: serial("id").primaryKey(),
-  userId: text("white_player")
+  userId: text("user_id")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
   userColor: colorEnum("color").notNull(),
   aiLevel: aiLevelEnum("ai_level").notNull(),
-  played_at: timestamp("played_at", { mode: "date" }),
+  played_at: timestamp("played_at", { mode: "date" }).default(new Date()),
+  match_pgn: text("match_pgn"),
 
   userWon: boolean("user_won"),
 });
