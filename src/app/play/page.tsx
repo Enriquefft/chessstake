@@ -1,6 +1,7 @@
 import { difficultyLevelsInfo, type DifficultyLevel } from "@/lib/utils";
 import Link from "next/link";
 import { auth } from "@/auth";
+import ErrorPage, { ErrorType } from "@/components/error";
 
 // eslint-disable-next-line @typescript-eslint/no-magic-numbers
 const WAITOUT_TIME = 1000 * 60 * 60 * 24; // 24 Hours in milliseconds for getTime() comparison
@@ -41,11 +42,11 @@ export default async function ChessChallenge() {
   const player = (await auth())?.user;
 
   if (!player) {
-    throw new Error("Player not found");
+    return <ErrorPage type={ErrorType.PlayerNotFound} />;
   }
 
   if (!player.active) {
-    throw new Error("Player is not active");
+    return <ErrorPage type={ErrorType.PlayerNotActive} />;
   }
 
   const now = new Date();
@@ -54,7 +55,7 @@ export default async function ChessChallenge() {
     player.last_match &&
     now.getTime() - new Date(player.last_match).getTime() < WAITOUT_TIME
   ) {
-    throw new Error("Player can only play every 24 hours");
+    return <ErrorPage type={ErrorType.PlayerCanOnlyPlayEvery24Hours} />;
   }
 
   return (

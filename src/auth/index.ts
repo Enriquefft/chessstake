@@ -25,6 +25,7 @@ declare module "next-auth" {
       hasProfile: boolean;
       board_state?: string;
       last_match?: Date;
+      current_match?: number;
       active: boolean;
 
       /**

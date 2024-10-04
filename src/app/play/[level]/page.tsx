@@ -2,8 +2,9 @@
 import { getLevel, levelSchema } from "@/lib/utils";
 import ChessGame from "./ChessGame";
 import { db } from "@/db";
-import { matches } from "@/db/schema";
+import { matches, users } from "@/db/schema";
 import { auth } from "@/auth";
+import { eq } from "drizzle-orm";
 // eslint-disable-next-line @typescript-eslint/no-magic-numbers
 const WAITOUT_TIME = 1000 * 60 * 60 * 24; // 24 Hours in milliseconds for getTime() comparison
 
@@ -44,17 +45,30 @@ export default async function ChessPage({
     return null;
   }
 
-  const [newMatch] = await db
-    .insert(matches)
-    .values({
-      userId,
-      userColor: "white",
-      aiLevel: levelName,
+  let matchId = player.current_match;
+  if (matchId === undefined) {
+    matchId = (
+      await db
+        .insert(matches)
+        .values({
+          userId,
+          userColor: "white",
+          aiLevel: levelName,
+        })
+        .returning({
+          id: matches.id,
+        })
+    ).at(0)?.id;
+  }
+
+  await db
+    .update(users)
+    .set({
+      current_match: matchId,
     })
-    .returning({
-      id: matches.id,
-    });
-  const newMatchId = newMatch?.id;
+    .where(eq(users.id, userId));
+
+  const newMatchId = matchId;
   if (newMatchId === undefined) {
     throw new Error("Failed to create a new match");
   }

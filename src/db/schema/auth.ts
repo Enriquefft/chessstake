@@ -13,6 +13,8 @@ import { relations } from "drizzle-orm";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+import { matches } from "./matches";
+
 export const userLevelEnum = pgEnum("user_level_enum", [
   "principiante",
   "intermedio",
@@ -32,9 +34,11 @@ export const users = schema.table("user", {
   hasProfile: boolean("hasProfile").default(false),
   board_state: text("board_state"),
   last_match: timestamp("last_match", { mode: "date" }),
+  current_match: integer("current_match"),
 
   active: boolean("active").notNull().default(false),
 });
+export type UserInsertion = typeof users.$inferInsert;
 
 export const profile = schema.table("profile", {
   userId: text("userId")
@@ -57,6 +61,7 @@ export type ProfileInsertion = typeof profile.$inferInsert;
 
 export const userRelations = relations(users, ({ one }) => ({
   profile: one(profile),
+  currentMatch: one(matches),
 }));
 export const profileRelatiosn = relations(profile, ({ one }) => ({
   user: one(users, { fields: [profile.userId], references: [users.id] }),
