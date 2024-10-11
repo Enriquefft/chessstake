@@ -143,7 +143,6 @@ const tsRules = {
   ],
 };
 
-/** @type {import("eslint").Linter.Config['parserOptions']}*/
 const parserOptions = {
   ecmaVersion: "latest",
   sourceType: "module",
@@ -152,7 +151,6 @@ const parserOptions = {
 
 const defaultRules = Object.assign(jsRules, tsRules, jsdocRules, drizzleRules);
 
-/** @type {import("eslint").Linter.Config} */
 const config = {
   ignorePatterns: [
     "**/old/**/*",

@@ -5,11 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
-export enum ErrorType {
-  PlayerNotFound = "PlayerNotFound",
-  PlayerNotActive = "PlayerNotActive",
-  PlayerCanOnlyPlayEvery24Hours = "PlayerCanOnlyPlayEvery24Hours",
-}
+import { ErrorType } from "@/lib/utils";
 
 const errorMessagesMap: Record<ErrorType, string> = {
   [ErrorType.PlayerNotFound]:
@@ -31,32 +27,15 @@ export default function ErrorPage({ error, type, reset }: ErrorPageProps) {
   );
 
   useEffect(() => {
-    let message: string | undefined;
-    if (type) {
-      message = errorMessagesMap[type];
-      console.error("Global Error:", type);
-    } else if (error) {
-      console.error("Global Error:", error);
-      const errorKey = Object.keys(ErrorType).find(
-        (key) => ErrorType[key as keyof typeof ErrorType] === error.message,
-      ) as ErrorType | undefined;
-
-      if (errorKey && errorKey in errorMessagesMap) {
-        message = errorMessagesMap[errorKey];
-      }
-    }
-    setFriendlyMessage(
-      message ??
-        "An unexpected error occurred. Please try again or contact us.",
-    );
+    const message = type === undefined ? error.message : errorMessagesMap[type];
+    setFriendlyMessage(message);
   }, [error, type]);
 
   const contactWhatsApp = () => {
-    const errorMessage = type ?? error?.message ?? "Unknown error";
     window.open(
       buildWhatsappLink(
         "51984724707",
-        `Hola, he encontrado el siguiente error: "${errorMessage}".`,
+        `Hola, he encontrado el siguiente error:\n "${friendlyMessage}".`,
       ),
       "_blank",
     );

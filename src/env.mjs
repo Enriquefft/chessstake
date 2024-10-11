@@ -10,6 +10,7 @@ export const env = createEnv({
     DRIZZLE_DATABASE_URL: z.string().url(),
 
     AUTH_SECRET: z.string(),
+    ESLINT_USE_FLAT_CONFIG: z.coerce.boolean(),
   },
   client: {
     NEXT_PUBLIC_PROJECT_NAME: z.string(),
@@ -19,6 +20,7 @@ export const env = createEnv({
     NEXT_PUBLIC_PROJECT_NAME: process.env["NEXT_PUBLIC_PROJECT_NAME"],
     NEXT_PUBLIC_CHESSSTAKE_PHONE: process.env["NEXT_PUBLIC_CHESSSTAKE_PHONE"],
     DRIZZLE_DATABASE_URL: process.env["DRIZZLE_DATABASE_URL"],
+    ESLINT_USE_FLAT_CONFIG: process.env["ESLINT_USE_FLAT_CONFIG"],
 
     AUTH_SECRET: process.env["AUTH_SECRET"],
   },

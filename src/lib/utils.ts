@@ -143,3 +143,10 @@ export function getLevel(level: string) {
 
   return difficultyLevelsInfo[parsedLevel];
 }
+
+enum ErrorType {
+  PlayerNotFound = "PlayerNotFound",
+  PlayerNotActive = "PlayerNotActive",
+  PlayerCanOnlyPlayEvery24Hours = "PlayerCanOnlyPlayEvery24Hours",
+}
+export { ErrorType };

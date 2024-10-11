@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 const chessPieces = ["B", "K", "N", "P", "Q", "R"] as const;
 const colors = ["w", "b"] as const;
 
-const getRandomChessPiece = () => {
+function getRandomChessPiece() {
   const randomPiece =
     chessPieces[Math.floor(Math.random() * chessPieces.length)];
   const randomColor = colors[Math.floor(Math.random() * colors.length)];
@@ -17,7 +17,7 @@ const getRandomChessPiece = () => {
 
   const piece = `${randomColor}${randomPiece}` as const;
   return piece;
-};
+}
 
 const CHANGE_DURATION = 1000;
 

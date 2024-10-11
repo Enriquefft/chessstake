@@ -1,10 +1,11 @@
 "use server";
-import { getLevel, levelSchema } from "@/lib/utils";
+import { ErrorType, getLevel, levelSchema } from "@/lib/utils";
 import ChessGame from "./ChessGame";
 import { db } from "@/db";
 import { matches, users } from "@/db/schema";
 import { auth } from "@/auth";
 import { eq } from "drizzle-orm";
+import ErrorPage from "@/components/error";
 // eslint-disable-next-line @typescript-eslint/no-magic-numbers
 const WAITOUT_TIME = 1000 * 60 * 60 * 24; // 24 Hours in milliseconds for getTime() comparison
 
@@ -22,11 +23,11 @@ export default async function ChessPage({
   const player = (await auth())?.user;
 
   if (!player) {
-    throw new Error("Player not found");
+    return <ErrorPage type={ErrorType.PlayerNotFound} />;
   }
 
   if (!player.active) {
-    throw new Error("Player is not active");
+    return <ErrorPage type={ErrorType.PlayerNotActive} />;
   }
 
   const now = new Date();
@@ -35,7 +36,7 @@ export default async function ChessPage({
     player.last_match &&
     now.getTime() - new Date(player.last_match).getTime() < WAITOUT_TIME
   ) {
-    throw new Error("Player can only play every 24 hours");
+    return <ErrorPage type={ErrorType.PlayerCanOnlyPlayEvery24Hours} />;
   }
 
   const levelName = levelSchema.parse(params.level);

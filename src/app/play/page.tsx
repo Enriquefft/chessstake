@@ -1,7 +1,11 @@
-import { difficultyLevelsInfo, type DifficultyLevel } from "@/lib/utils";
+import {
+  difficultyLevelsInfo,
+  type DifficultyLevel,
+  ErrorType,
+} from "@/lib/utils";
 import Link from "next/link";
 import { auth } from "@/auth";
-import ErrorPage, { ErrorType } from "@/components/error";
+import ErrorPage from "@/components/error";
 
 // eslint-disable-next-line @typescript-eslint/no-magic-numbers
 const WAITOUT_TIME = 1000 * 60 * 60 * 24; // 24 Hours in milliseconds for getTime() comparison
